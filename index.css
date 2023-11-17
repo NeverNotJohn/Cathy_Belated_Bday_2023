@@ -1,0 +1,118 @@
+.center-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Optional: Make the container fill the viewport height */
+}
+
+.invisible {
+    display: none;
+}
+
+.top {
+    z-index: 9999; /* Higher z-index value */
+    position: absolute;
+    width: 20%; /* Adjust the percentage as desired */
+    height: 10%;
+}
+
+body {
+    overflow: hidden;
+    background-color: #1e1e1e;
+}
+
+.animated-text {
+    user-select: none;
+    color: white;
+    position: absolute;
+    animation: fly 1s linear infinite;
+    animation: spin 2s linear infinite; /* Spin animation */
+}
+
+@keyframes fly {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(100%, -100%);
+    }
+    50% {
+        transform: translate(100%, 0);
+    }
+    75% {
+        transform: translate(100%, 100%);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+img {
+    width: 100px;
+    height: 100px;
+
+}
+
+marquee {
+    height: 10vh;
+}
+
+:root {
+    --width: 450px;
+    --height:calc(var(--width) / 2);
+  }
+
+  
+.ball {
+    width: 100px;
+    height: 100px;
+    background: url('static/images/output-onlinepngtools.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position:absolute;
+  
+    animation: toRight linear 4s infinite alternate, bounce linear 5s infinite alternate;
+  }
+  
+  @keyframes bounce {
+    0% {
+      
+    }
+    48% {
+    }
+    50% {
+      top: calc(100% - var(--height));
+    }
+    52% {
+    }
+    100% {
+      top: 0;
+    }
+  }
+  
+  @keyframes toRight {
+  
+    0% {
+
+    }
+  
+    100% {
+      left: calc(100% - var(--width));
+    }
+  }
