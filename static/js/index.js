@@ -1,6 +1,6 @@
 // The attributes of the player.
 var player = {
-    x: 100,
+    x: (window.innerWidth)/2 + 25,
     y: 500,
     x_v: 0,
     y_v: 0,
@@ -37,7 +37,11 @@ function rendercanvas(){
 // Function to render the player
 function renderplayer(){
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect((player.x)-20, (player.y)-20, player.width, player.height);
+    ctx.fillRect((player.x)-player.width, (player.y)-player.height, player.width, player.height);
+    
+    // debug box
+    ctx.fillStyle = "#FF0000";
+    ctx.fillRect(player.x, player.y-player.height, 5, 5);
 }
 
 // Function to create platforms
@@ -72,7 +76,7 @@ function keydown(e) {
     // 37 is the code for the up arrow key
     if(e.keyCode == 87 || e.keyCode == 32) {
         if(player.jump == false) {
-            player.y_v = -10;
+            player.y_v = -15;
         }
     }
     // 39 is the code for the right arrow key
@@ -123,19 +127,18 @@ function loop() {
     
     for (let j = 0; j < platforms.length; j++)
     {
-        if(platforms[j].x < player.x + player.width && player.x < platforms[j].x + platforms[j].width &&
-            platforms[j].y < player.y && player.y < platforms[j].y + platforms[j].height)
+        if (
+            platforms[j].x < player.x                                               // 1 if player is to the right of left platform edge
+            && player.x - player.width < platforms[j].x + platforms[j].width        // 1 if player is to the left of right platform edge
+            && platforms[j].y < player.y                                            // 1 if the player is below platform
+            && player.y < platforms[j].y + platforms[j].height                      // 1 if player is above top of platform
+           )
         {
-            i = j;
+            player.jump = false;
+            player.y = platforms[j].y;   
         }
     }
 
-    if (i > -1){
-        player.jump = false;
-        player.y = platforms[i].y;    
-    }
-
-    // Create Platforms
 
     // Rendering the canvas, the player and the platforms
     rendercanvas();
@@ -144,7 +147,14 @@ function loop() {
 
 }
 
-createplat(5, 800, 1670, 100);
+// Create Platforms
+
+const center = window.innerWidth/2;
+
+createplat(center-350/2, 750, 350, 20);
+createplat(center-300/2-300, 590, 300, 20);
+createplat(center-300/2 + 300, 590, 300, 20);
+
 
 canvas=document.getElementById("canvas");
 ctx=canvas.getContext("2d");
