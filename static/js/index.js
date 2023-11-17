@@ -1,122 +1,155 @@
-// Slide Starts
+// The attributes of the player.
+var player = {
+    x: 100,
+    y: 500,
+    x_v: 0,
+    y_v: 0,
+    jump : true,
+    height: 50,
+    width: 50
+    };
 
-const startButton = document.getElementById('main_button');
-const text = document.getElementById('main_text');
+// The status of the arrow keys
+var keys = {
+    right: false,
+    left: false,
+    up: false,
+    };
 
+// The friction and gravity to show realistic movements    
+var gravity = 0.6;
+var friction = 0.7;
 
-startButton.addEventListener('click', () => {
-    
-    boop = Math.floor(Math.random() * 2);
+// The number of platforms
+var num = 2;
 
-    if (boop == 0)
+// The platforms
+var platforms = [];
+
+// Function to render the canvas
+function rendercanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.fillStyle = "#f5b5b8";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+// Function to render the player
+function renderplayer(){
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect((player.x)-20, (player.y)-20, player.width, player.height);
+}
+
+// Function to create platforms
+function createplat(x,y,width,height) {
+    platforms.push(
+        {
+        x: x,
+        y: y,
+        width: width,
+        height: height
+        }
+    );
+}
+
+// Function to render platforms
+function renderplat(){
+    ctx.fillStyle = "#45597E";
+
+    for (let j = 0; j < platforms.length; j++) 
     {
-        moop = Math.floor(Math.random() * 4);
-
-        if (moop == 0)
-        {
-            const sound = document.getElementById('one');
-            sound.play()
-        } else if (moop == 1)
-        {
-            const sound = document.getElementById('two');
-            sound.play()
-        } else if (moop == 2)
-        {
-            const sound = document.getElementById('four');
-            sound.play()
-        } else
-        {
-            const sound = document.getElementById('three');
-            sound.play()
-        }
-
+        ctx.fillRect(platforms[j].x, platforms[j].y, platforms[j].width, platforms[j].height);
     }
 
-    // When the button is clicked, create and append animated text elements
-    for (let i = 0; i < 1; i++) {
-        num = Math.floor(Math.random() * 3);
-
-        if (num == 0) {
-            const animatedText = document.createElement('div');
-            animatedText.textContent = 'You\'re Old!!!';
-            animatedText.className = 'animated-text';
-
-            // Set random initial positions
-            animatedText.style.left = Math.random() * 100 + 'vw';
-            animatedText.style.top = Math.random() * 100 + 'vh';
-
-            document.body.appendChild(animatedText);
-        }
-
-        if (num == 1) {
-            const randomColor = getRandomColor();
-            document.body.style.backgroundColor = randomColor;
-        }
-
-        if (num == 2) {
-            const image = document.createElement('img');
-            image.className = 'ball';
-            imageURL = "static/images/nick.png";
-
-            cum = Math.floor(Math.random() * 3);
-
-            if (cum == 0)
-            {
-                imageURL = 'static/images/nick.png';
-            } else if (cum == 1)
-            {
-                imageURL = 'static/images/roof_korean.png';
-            } else 
-            {
-                imageURL = 'static/images/help.png'
-            }
-
-            image.style.backgroundImage = `url('${imageURL}')` 
-
-            image.style.left = Math.random() * 100 + 'vw';
-            image.style.top = Math.random() * 100 + 'vh';
-            document.body.appendChild(image);
-        }
-    }
-});
-
-
-
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
 }
 
-function animateDVDLogo(element) {
-    const maxX = window.innerWidth - element.clientWidth;
-    const maxY = window.innerHeight - element.clientHeight;
-    let x = Math.random() * maxX;
-    let y = Math.random() * maxY;
-
-    let dx = 1;
-    let dy = 1;
-
-    function step() {
-        x += dx;
-        y += dy;
-
-        if (x <= 0 || x >= maxX) {
-            dx = -dx;
+// This function will be called when a key on the keyboard is pressed
+function keydown(e) {
+    // 37 is the code for the left arrow key
+    if(e.keyCode == 65) {
+        keys.left = true;
+    }
+    // 37 is the code for the up arrow key
+    if(e.keyCode == 87 || e.keyCode == 32) {
+        if(player.jump == false) {
+            player.y_v = -10;
         }
+    }
+    // 39 is the code for the right arrow key
+    if(e.keyCode == 68) {
+        keys.right = true;
+    }
+}
 
-        if (y <= 0 || y >= maxY) {
-            dy = -dy;
+// This function is called when the pressed key is released
+function keyup(e) {
+    if(e.keyCode == 65) {
+        keys.left = false;
+    }
+    if(e.keyCode == 87 || e.keyCode == 32) {
+        if(player.y_v < -2) {
+        player.y_v = -3;
         }
+    }
+    if(e.keyCode == 68) {
+        keys.right = false;
+    }
+} 
 
-        element.style.left = x + 'px';
-        element.style.top = y + 'px';
+function loop() {
 
-        requestAnimationFrame(step);
+    // If the player is not jumping apply the effect of frictiom
+    if(player.jump == false) {
+        player.x_v *= friction;
+    } else {
+        // If the player is in the air then apply the effect of gravity
+        player.y_v += gravity;
+    }
+    player.jump = true;
+    // If the left key is pressed increase the relevant horizontal velocity
+    if(keys.left) {
+        player.x_v = -2.5;
+    }
+    if(keys.right) {
+        player.x_v = 2.5;
     }
 
-    step();
+    // Updating the y and x coordinates of the player
+    player.y += player.y_v;
+    player.x += player.x_v;
+
+    // A simple code that checks for collions with the platform
+    let i = -1;
+    
+    for (let j = 0; j < platforms.length; j++)
+    {
+        if(platforms[j].x < player.x + player.width && player.x < platforms[j].x + platforms[j].width &&
+            platforms[j].y < player.y && player.y < platforms[j].y + platforms[j].height)
+        {
+            i = j;
+        }
+    }
+
+    if (i > -1){
+        player.jump = false;
+        player.y = platforms[i].y;    
+    }
+
+    // Create Platforms
+
+    // Rendering the canvas, the player and the platforms
+    rendercanvas();
+    renderplayer();
+    renderplat();
+
 }
+
+createplat(5, 800, 1670, 100);
+
+canvas=document.getElementById("canvas");
+ctx=canvas.getContext("2d");
+
+// Adding the event listeners
+document.addEventListener("keydown",keydown);
+document.addEventListener("keyup",keyup);
+setInterval(loop,22);
