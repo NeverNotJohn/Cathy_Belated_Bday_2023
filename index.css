@@ -1,5 +1,5 @@
 body {
-    margin: 0;
+    background-color: #f5b5b8;
     overflow: hidden;
 }
 
@@ -17,4 +17,33 @@ body {
     position: absolute;
     bottom: 0;
     left: 0;
+}
+
+.centered-container {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bubble-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 50px;
+    background-color: #FFFFFF; /* Bootstrap primary color */
+    color: #000; /* Text color */
+    transition: transform 0.3s ease-in-out;
+    width: 20vh;
+    height: 15vh;
+}
+
+#text {
+    height: 37vh;
+    text-align: center;
+    color: white;
+}
+
+
+
+.bubble-button:hover {
+    transform: scale(1.1); /* Increase the size on hover for the bubble effect */
 }

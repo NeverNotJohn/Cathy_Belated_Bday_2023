@@ -145,21 +145,56 @@ function loop() {
     renderplayer();
     renderplat();
 
+    // Out of screen? TP to Middle
+
+    if (player.y > window.innerHeight || player.x < 0 || player.x > window.innerWidth)
+    {
+        player.x = (window.innerWidth)/2 + 25;
+        player.y = 500;
+        player.x_v = 0;
+        player.y_v = 0;
+    }
+
+    // limit vertical velocity
+    
+    if (player.y_v > 15)
+    {
+        player.y_v = 15;
+    }
+
+    
+
 }
 
-// Create Platforms
+/////////////////////
+///     Main      ///
+/////////////////////
 
+
+const startButton = document.getElementById('start');
 const center = window.innerWidth/2;
+const allDiv = document.getElementById('front');
 
-createplat(center-350/2, 750, 350, 20);
-createplat(center-300/2-300, 590, 300, 20);
-createplat(center-300/2 + 300, 590, 300, 20);
+startButton.addEventListener('click', function () {
 
+    // Removing Front Page
+    startButton.parentNode.removeChild(startButton);
+    allDiv.innerHTML = '';
+    allDiv.parentNode.removeChild(allDiv);
+    document.documentElement.style.height = '100vh';
+    document.body.style.height = '100vh';
+    
+    // Create platforms
+    createplat(center-350/2, 750, 350, 20);
+    createplat(center-300/2-300, 590, 300, 20);
+    createplat(center-300/2 + 300, 590, 300, 20);
+    
+    canvas=document.getElementById("canvas");
+    ctx=canvas.getContext("2d");
 
-canvas=document.getElementById("canvas");
-ctx=canvas.getContext("2d");
+    // Adding the event listeners
+    document.addEventListener("keydown",keydown);
+    document.addEventListener("keyup",keyup);
+    setInterval(loop,22);
 
-// Adding the event listeners
-document.addEventListener("keydown",keydown);
-document.addEventListener("keyup",keyup);
-setInterval(loop,22);
+});
