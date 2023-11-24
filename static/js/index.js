@@ -1,3 +1,9 @@
+// Terrible Global var syntax but f it
+
+let level = 1;
+var jumpSound = new Audio('static/sounds/jump.mp3');
+
+
 // The attributes of the player.
 var player = {
     x: (window.innerWidth)/2 + 25,
@@ -13,7 +19,7 @@ var player = {
 var keys = {
     right: false,
     left: false,
-    up: false,
+    up: false
     };
 
 // The friction and gravity to show realistic movements    
@@ -65,6 +71,22 @@ function renderplat(){
         ctx.fillRect(platforms[j].x, platforms[j].y, platforms[j].width, platforms[j].height);
     }
 
+    // Level 1 Text
+
+    switch (level) {
+        case 1:
+            ctx.font = '50px arial';
+            ctx.fillStyle = 'white';
+            var text = "Go Up To Advance! :>";
+            var textWidth = ctx.measureText(text).width;
+            ctx.fillText('Go Up To Advance! :>', center - textWidth/2, 130);
+            break;
+    
+        default:
+            break;
+    }
+    
+
 }
 
 // This function will be called when a key on the keyboard is pressed
@@ -78,6 +100,8 @@ function keydown(e) {
         if(player.jump == false) {
             player.y_v = -15;
         }
+        jumpSound.play();
+        keys.up = true;
     }
     // 39 is the code for the right arrow key
     if(e.keyCode == 68) {
@@ -94,6 +118,7 @@ function keyup(e) {
         if(player.y_v < -2) {
         player.y_v = -3;
         }
+        keys.up = false;
     }
     if(e.keyCode == 68) {
         keys.right = false;
@@ -118,13 +143,13 @@ function loop() {
         player.x_v = 2.5;
     }
 
+
     // Updating the y and x coordinates of the player
     player.y += player.y_v;
     player.x += player.x_v;
 
     // A simple code that checks for collions with the platform
-    let i = -1;
-    
+
     for (let j = 0; j < platforms.length; j++)
     {
         if (
@@ -137,22 +162,35 @@ function loop() {
             player.jump = false;
             player.y = platforms[j].y;   
         }
-    }
 
+
+    }
 
     // Rendering the canvas, the player and the platforms
     rendercanvas();
     renderplayer();
     renderplat();
 
-    // Out of screen? TP to Middle
+    // Out of screen? TP to Opposite side
 
     if (player.y > window.innerHeight || player.x < 0 || player.x > window.innerWidth)
     {
-        player.x = (window.innerWidth)/2 + 25;
-        player.y = 500;
-        player.x_v = 0;
-        player.y_v = 0;
+
+        if (player.x < 0)
+        {
+            player.x = window.innerWidth;
+        }
+        else if (player.x - player.width > window.innerWidth)
+        {
+            player.x = 0;
+        }
+        else if (player.y > window.innerHeight)
+        {
+            player.y = 0;
+            player.x_v = 0;
+            player.y_v = 0;
+        }
+
     }
 
     // limit vertical velocity
@@ -162,6 +200,33 @@ function loop() {
         player.y_v = 15;
     }
 
+    // When up, go to next level
+
+    if (player.y < 10 && player.y_v < 0)
+    {
+        level++;
+
+        // Generate new platforms
+        switch (level) {
+            case 2:
+                platforms = [];
+                player.x = (window.innerWidth)/2 + 25;
+                player.y = 500;
+
+                // Create New Platforms
+
+                break;
+        
+            default:
+                break;
+        }
+
+    }
+
+
+    // Debug
+
+    console.log(player.y);
     
 
 }
@@ -177,6 +242,9 @@ const allDiv = document.getElementById('front');
 
 startButton.addEventListener('click', function () {
 
+    canvas=document.getElementById("canvas");
+    ctx=canvas.getContext("2d");
+
     // Removing Front Page
     startButton.parentNode.removeChild(startButton);
     allDiv.innerHTML = '';
@@ -185,12 +253,17 @@ startButton.addEventListener('click', function () {
     document.body.style.height = '100vh';
     
     // Create platforms
+
+    // Level 1
     createplat(center-350/2, 750, 350, 20);
     createplat(center-300/2-300, 590, 300, 20);
     createplat(center-300/2 + 300, 590, 300, 20);
+
+    createplat(center-250/2, 400, 250, 20);
+    createplat(center-300/2 + 350, 200, 300, 20);
+    createplat(center-300/2-350, 200, 300, 20);
+
     
-    canvas=document.getElementById("canvas");
-    ctx=canvas.getContext("2d");
 
     // Adding the event listeners
     document.addEventListener("keydown",keydown);

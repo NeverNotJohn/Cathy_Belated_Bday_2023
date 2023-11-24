@@ -39,6 +39,7 @@ body {
 #text {
     height: 37vh;
     text-align: center;
+    font-size: 100px;
     color: white;
 }
 
