@@ -2,7 +2,7 @@
 
 let level = 1;
 var jumpSound = new Audio('static/sounds/jump.mp3');
-
+var music = new Audio('static/sounds/seycara.mp3')
 
 // The attributes of the player.
 var player = {
@@ -89,6 +89,11 @@ function renderplat(){
 
 }
 
+function playJumpSound()
+{
+    jumpSound.play();
+}
+
 // This function will be called when a key on the keyboard is pressed
 function keydown(e) {
     // 37 is the code for the left arrow key
@@ -99,8 +104,8 @@ function keydown(e) {
     if(e.keyCode == 87 || e.keyCode == 32) {
         if(player.jump == false) {
             player.y_v = -15;
+            playJumpSound();
         }
-        jumpSound.play();
         keys.up = true;
     }
     // 39 is the code for the right arrow key
@@ -240,7 +245,13 @@ const startButton = document.getElementById('start');
 const center = window.innerWidth/2;
 const allDiv = document.getElementById('front');
 
+// Start Music on startup
+music.loop = true;
+
+
 startButton.addEventListener('click', function () {
+
+    music.play();
 
     canvas=document.getElementById("canvas");
     ctx=canvas.getContext("2d");
