@@ -47,8 +47,19 @@ function renderplayer(){
     ctx.fillRect((player.x)-player.width, (player.y)-player.height, player.width, player.height);
     
     // debug box
-    ctx.fillStyle = "#FF0000";
-    ctx.fillRect(player.x, player.y-player.height, 5, 5);
+    //ctx.fillStyle = "#FF0000";
+    //ctx.fillRect(player.x, player.y-player.height, 5, 5);
+}
+
+// Images
+image_path = "";
+image_x = 0;
+image_y = 0;
+function renderimage()
+{
+  base_image = new Image();
+  base_image.src = image_path;
+  ctx.drawImage(base_image, image_x, image_y);
 }
 
 // Function to create platforms
@@ -64,6 +75,8 @@ function createplat(x,y,width,height) {
 }
 
 // Function to create mask
+mask_num = 0;
+mask_size = 0;
 function createmask(x,y,width,height) {
     masks.push(
         {
@@ -85,7 +98,7 @@ function renderplat(){
     }
 
     // Render masks
-    ctx.fillStyle = "#45597E";
+    ctx.fillStyle = "#f5b5b8";
     for (let j = 0; j < masks.length; j++) 
     {
         ctx.fillRect(masks[j].x, masks[j].y, masks[j].width, masks[j].height);
@@ -102,6 +115,14 @@ function renderplat(){
             ctx.fillText('Go Up To Advance! :>', center - textWidth/2, 130);
             break;
     
+        case 2:
+            ctx.font = '50px arial';
+            ctx.fillStyle = 'white';
+            var text = `Level is ${(1-mask_num/mask_size) * 100 }% cleared!`;
+            var textWidth = ctx.measureText(text).width;
+            ctx.fillText(text, center - textWidth/2, 130);
+            break;
+
         default:
             break;
     }
@@ -195,6 +216,7 @@ function loop() {
 
     // Rendering the canvas, the player and the platforms
     rendercanvas();
+    renderimage();
     renderplayer();
     renderplat();
 
@@ -207,6 +229,7 @@ function loop() {
             && player.y < masks[j].y + masks[j].height                      // 1 if player is above top of platform
            )
         {
+            mask_num--;
             masks[j] = 
                 {
                 x: 0,
@@ -272,13 +295,7 @@ function loop() {
         }
 
     }
-
-
-    // Debug
-
-    console.log(player.y);
     
-
 }
 
 function level2() {
@@ -288,16 +305,21 @@ function level2() {
 
     createplat(center-250/2 + 300, 400, 250, 20);
     createplat(center-250/2 - 300, 400, 250, 20);
-    createplat(center-200/2 + 400, 200, 200, 20);
-    createplat(center-200/2 - 400, 200, 200, 20);
+    createplat(center-300/2 + 300, 200, 300, 20);
+    createplat(center-300/2 - 300, 200, 300, 20);
 
     for (let i = 0; i < 10; i++)
     {
         for (let j = 0; j < 10; j++)
         {
-            createmask(center-250 + j*50, 650 - i*50, 50, 50);
+            createmask(center-250 + j*50, 600 - i*50, 50, 50);
         }
     }
+    image_path = "static/images/candycorn_girl_STICKER.png";
+    image_x = center-250;
+    image_y = 200;
+    mask_num = 100;
+    mask_size = 100;
 }
 
 /////////////////////
