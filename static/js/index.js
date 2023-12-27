@@ -31,6 +31,7 @@ var num = 2;
 
 // The platforms
 var platforms = [];
+var masks = [];
 
 // Function to render the canvas
 function rendercanvas(){
@@ -62,6 +63,18 @@ function createplat(x,y,width,height) {
     );
 }
 
+// Function to create mask
+function createmask(x,y,width,height) {
+    masks.push(
+        {
+        x: x,
+        y: y,
+        width: width,
+        height: height
+        }
+    );
+}
+
 // Function to render platforms
 function renderplat(){
     ctx.fillStyle = "#45597E";
@@ -69,6 +82,13 @@ function renderplat(){
     for (let j = 0; j < platforms.length; j++) 
     {
         ctx.fillRect(platforms[j].x, platforms[j].y, platforms[j].width, platforms[j].height);
+    }
+
+    // Render masks
+    ctx.fillStyle = "#45597E";
+    for (let j = 0; j < masks.length; j++) 
+    {
+        ctx.fillRect(masks[j].x, masks[j].y, masks[j].width, masks[j].height);
     }
 
     // Level 1 Text
@@ -171,10 +191,33 @@ function loop() {
 
     }
 
+    // Remove Masks
+
     // Rendering the canvas, the player and the platforms
     rendercanvas();
     renderplayer();
     renderplat();
+
+    for (let j = 0; j < masks.length; j++)
+    {
+        if (
+            masks[j].x < player.x                                               // 1 if player is to the right of left platform edge
+            && player.x - player.width < masks[j].x + masks[j].width        // 1 if player is to the left of right platform edge
+            && masks[j].y < player.y                                            // 1 if the player is below platform
+            && player.y < masks[j].y + masks[j].height                      // 1 if player is above top of platform
+           )
+        {
+            masks[j] = 
+                {
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0
+                }
+        }
+
+
+    }
 
     // Out of screen? TP to Opposite side
 
@@ -218,6 +261,8 @@ function loop() {
                 player.x = (window.innerWidth)/2 + 25;
                 player.y = 500;
 
+                level2();
+
                 // Create New Platforms
 
                 break;
@@ -234,6 +279,25 @@ function loop() {
     console.log(player.y);
     
 
+}
+
+function level2() {
+    createplat(center-350/2, 750, 350, 20);
+    createplat(center-200/2-250, 590, 200, 20);
+    createplat(center-200/2 + 250, 590, 200, 20);
+
+    createplat(center-250/2 + 300, 400, 250, 20);
+    createplat(center-250/2 - 300, 400, 250, 20);
+    createplat(center-200/2 + 400, 200, 200, 20);
+    createplat(center-200/2 - 400, 200, 200, 20);
+
+    for (let i = 0; i < 10; i++)
+    {
+        for (let j = 0; j < 10; j++)
+        {
+            createmask(center-250 + j*50, 650 - i*50, 50, 50);
+        }
+    }
 }
 
 /////////////////////
