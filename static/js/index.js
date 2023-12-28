@@ -301,9 +301,10 @@ function loop() {
 
         if (level == 3)
         {
-            createplat(center-350/2, 750, 350, 20);
-            createplat(center-200/2-250, 590, 200, 20);
-            createplat(center-200/2 + 250, 590, 200, 20);
+            createplat(center+600, 700, 300, 20);
+            createplat(center+600, 500, 300, 20);
+            createplat(center+600, 300, 300, 20);
+            createplat(center+600, 100, 300, 20);
         }
 
     }
@@ -334,7 +335,32 @@ function loop() {
                 player.y = 700;
 
                 level3();
-        
+                break;
+
+            case 4:
+
+                platforms = [];
+                player.x = 100;
+                player.y = 700;
+                level4();
+                break;
+
+            case 5:
+
+                platforms = [];
+                player.x = 100;
+                player.y = 700;
+                level5();
+                break;
+    
+            case 6:
+
+                platforms = [];
+                player.x = 100;
+                player.y = 700;
+                level6();
+                break;
+
             default:
                 break;
         }
@@ -385,9 +411,46 @@ function level3() {
     image_y = 650;
     mask_num = 60;
     mask_size = 60;
-    levelLock = false;
+    levelLock = true;
 
 
+}
+
+function level4()
+{
+    createplat(center-2000/2, 800, 2000, 20);
+    createplat(center+600, 700, 300, 20);
+    createplat(center+600, 500, 300, 20);
+    createplat(center+600, 300, 300, 20);
+    createplat(center+600, 100, 300, 20);
+    masks = [];
+
+    mask_num = 0;
+    mask_size = 0;
+}
+function level5()
+{
+    createplat(center-2000/2, 800, 2000, 20);
+    createplat(center+600, 700, 300, 20);
+    createplat(center+600, 500, 300, 20);
+    createplat(center+600, 300, 300, 20);
+    createplat(center+600, 100, 300, 20);
+    masks = [];
+
+    mask_num = 0;
+    mask_size = 0;
+}
+function level6()
+{
+    createplat(center-2000/2, 800, 2000, 20);
+    createplat(center+600, 700, 300, 20);
+    createplat(center+600, 500, 300, 20);
+    createplat(center+600, 300, 300, 20);
+    createplat(center+600, 100, 300, 20);
+    masks = [];
+
+    mask_num = 0;
+    mask_size = 0;
 }
 
 /////////////////////
