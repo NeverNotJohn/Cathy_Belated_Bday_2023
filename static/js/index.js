@@ -2,7 +2,8 @@
 
 let level = 1;
 var jumpSound = new Audio('static/sounds/jump.mp3');
-var music = new Audio('static/sounds/seycara.mp3')
+var music = new Audio('static/sounds/seycara.mp3');
+var win = new Audio('static/sounds/win.mp3');
 
 // The attributes of the player.
 var player = {
@@ -45,7 +46,7 @@ function rendercanvas(){
 function renderplayer(){
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect((player.x)-player.width, (player.y)-player.height, player.width, player.height);
-    
+
     // debug box
     //ctx.fillStyle = "#FF0000";
     //ctx.fillRect(player.x, player.y-player.height, 5, 5);
@@ -121,8 +122,26 @@ function renderplat(){
             var text = `Level is ${(1-mask_num/mask_size) * 100 }% cleared!`;
             var textWidth = ctx.measureText(text).width;
             ctx.fillText(text, center - textWidth/2, 130);
-            break;
 
+            if (levelLock)
+            {
+                ctx.fillText('Pumpkin!!!', center - textWidth/2, 300);
+            }
+
+            break;
+        case 3:
+            ctx.font = '50px arial';
+            ctx.fillStyle = 'white';
+            var text = `Level is ${(1-mask_num/mask_size) * 100 }% cleared!`;
+            var textWidth = ctx.measureText(text).width;
+            ctx.fillText(text, center - textWidth/2, 130);
+
+            if (levelLock)
+            {
+                ctx.fillText('Wide Heng!', center - textWidth/2, 500);
+            }
+
+            break;
         default:
             break;
     }
@@ -170,6 +189,9 @@ function keyup(e) {
         keys.right = false;
     }
 } 
+
+// Level Vars
+let levelLock = true;
 
 function loop() {
 
@@ -271,10 +293,26 @@ function loop() {
         player.y_v = 15;
     }
 
+    // Detect if good
+    if (!levelLock && mask_num <= 10)
+    {
+        levelLock = true;
+        win.play();
+
+        if (level == 3)
+        {
+            createplat(center-350/2, 750, 350, 20);
+            createplat(center-200/2-250, 590, 200, 20);
+            createplat(center-200/2 + 250, 590, 200, 20);
+        }
+
+    }
+
     // When up, go to next level
 
-    if (player.y < 10 && player.y_v < 0)
+    if (player.y < 10 && player.y_v < 0 && levelLock)
     {
+
         level++;
 
         // Generate new platforms
@@ -289,6 +327,13 @@ function loop() {
                 // Create New Platforms
 
                 break;
+
+            case 3:
+                platforms = [];
+                player.x = 100;
+                player.y = 700;
+
+                level3();
         
             default:
                 break;
@@ -320,6 +365,29 @@ function level2() {
     image_y = 200;
     mask_num = 100;
     mask_size = 100;
+    levelLock = true;
+}
+
+function level3() {
+    createplat(center-2000/2, 800, 2000, 20);
+    masks = [];
+
+    for (let i = 0; i < 2; i++)
+    {
+        for (let j = 0; j < 30; j++)
+        {
+            createmask(center-750 + j*50, 700 - i*50, 50, 50);
+        }
+    }
+
+    image_path = "static/images/wide_heng.png";
+    image_x = center-750;
+    image_y = 650;
+    mask_num = 60;
+    mask_size = 60;
+    levelLock = false;
+
+
 }
 
 /////////////////////
