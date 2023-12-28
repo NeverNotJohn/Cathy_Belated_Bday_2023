@@ -142,6 +142,16 @@ function renderplat(){
             }
 
             break;
+
+        case 7:
+            ctx.font = '50px arial';
+            ctx.fillStyle = 'white';
+            var text = `Level is ${(1-mask_num/mask_size) * 100 }% cleared!`;
+            var textWidth = ctx.measureText(text).width;
+            ctx.fillText(text, center - textWidth/2, 130);
+            ctx.fillText('Oh and one last thing...', center - textWidth/2, 500);
+
+           break;
         default:
             break;
     }
@@ -361,6 +371,14 @@ function loop() {
                 level6();
                 break;
 
+            case 7:
+
+                platforms = [];
+                player.x = 100;
+                player.y = 700;
+                level7();
+                break;
+
             default:
                 break;
         }
@@ -391,7 +409,7 @@ function level2() {
     image_y = 200;
     mask_num = 100;
     mask_size = 100;
-    levelLock = true;
+    levelLock = false;
 }
 
 function level3() {
@@ -457,7 +475,38 @@ function level6()
     masks = [];
 
     mask_num = 0;
-    mask_size = 0;
+    mask_size = 2
+}
+function level7()
+{
+    createplat(center-2000/2, 800, 2000, 20);
+    masks = [];
+
+    image_path = "static/images/old.png";
+    image_x = center;
+    image_y = 650;
+
+    createmask(center, 650,50,50);
+    createmask(center + 50, 650,50,50);
+    createmask(center + 100, 650,50,50);
+    createmask(center + 150, 650,50,50);
+    createmask(center + 200, 650,50,50);
+    createmask(center + 250, 650,50,50);
+    createmask(center, 700,50,50);
+    createmask(center + 50, 700,50,50);
+    createmask(center + 100, 700,50,50);
+    createmask(center + 150, 700,50,50);
+    createmask(center + 200, 700,50,50);
+    createmask(center + 250, 700,50,50);
+    createmask(center, 750,50,50);
+    createmask(center + 50, 750,50,50);
+    createmask(center + 100, 750,50,50);
+    createmask(center + 150, 750,50,50);
+    createmask(center + 200, 750,50,50);
+    createmask(center + 250, 750,50,50);
+
+    mask_num = 17;
+    mask_size = 37;
 }
 
 /////////////////////
