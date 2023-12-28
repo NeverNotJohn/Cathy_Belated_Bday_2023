@@ -411,7 +411,7 @@ function level3() {
     image_y = 650;
     mask_num = 60;
     mask_size = 60;
-    levelLock = true;
+    levelLock = false;
 
 
 }
@@ -425,11 +425,18 @@ function level4()
     createplat(center+600, 100, 300, 20);
     masks = [];
 
+    image_path = "static/images/msg1.png";
+    image_x = 100;
+    image_y = 100;
     mask_num = 0;
     mask_size = 0;
 }
+
 function level5()
 {
+    image_path = "static/images/msg2.png";
+    image_x = 10;
+    image_y = 10;
     createplat(center-2000/2, 800, 2000, 20);
     createplat(center+600, 700, 300, 20);
     createplat(center+600, 500, 300, 20);
