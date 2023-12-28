@@ -475,7 +475,8 @@ function level6()
     masks = [];
 
     mask_num = 0;
-    mask_size = 2
+    mask_size = 2;
+    levelLock = false;  
 }
 function level7()
 {
