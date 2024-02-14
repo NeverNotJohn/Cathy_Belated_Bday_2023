@@ -43,8 +43,10 @@ body {
     color: white;
 }
 
-
-
 .bubble-button:hover {
     transform: scale(1.1); /* Increase the size on hover for the bubble effect */
+}
+
+.slide-left {
+    transition: transform 0.5s ease-in-out;
 }
