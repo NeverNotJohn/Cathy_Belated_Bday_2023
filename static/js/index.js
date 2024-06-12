@@ -5,8 +5,6 @@ var jumpSound = new Audio('static/sounds/jump.mp3');
 var music = new Audio('static/sounds/seycara.mp3');
 var win = new Audio('static/sounds/win.mp3');
 
-const video = docum
-
 // The attributes of the player.
 var player = {
     x: (window.innerWidth)/2 + 25,
